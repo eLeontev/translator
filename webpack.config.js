@@ -12,7 +12,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.tsx$/,
+                test: /\.(tsx|ts)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -26,6 +26,7 @@ module.exports = {
                                     },
                                 },
                             ],
+                            '@babel/preset-typescript',
                             '@babel/preset-react',
                         ],
                     },
