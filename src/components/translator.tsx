@@ -1,51 +1,50 @@
 import React, { useState, useEffect } from 'react';
+import { OrderedMap, List } from 'immutable';
 
 import { Textarea } from './textarea';
-import { TextWithHintsComponent } from './text-with-hints';
-import { TranslatedValue } from './translated-value';
+import { TextWithHints } from './text-with-hints';
+import { Hints } from './Hints';
 
-import {
-    initialText,
-    initialWordWithTranslatedValueWithKey,
-} from '../constants/constants';
-import { callSetTranslationState } from '../services/translate.state.service';
+import { initialText, initialWordPairToDisplay } from '../constants/constants';
+import { translateWords } from '../effects/translate.words.effect';
 
-import {
-    TranslatorProps,
-    WordWithTranslatedValueWithKey,
-} from '../models/models';
+import { TranslatorProps, WordPair, ADD, DELETE } from '../models/models';
+import { updateHints } from '../effects/update-hints.effect';
 
 export const Translator = ({ getTranslatedValues }: TranslatorProps) => {
     const [{ text, previousText }, updateTextArea] = useState(initialText);
-    const [textWithHints, setTextWithHints] = useState([]);
-    const [wordPairs, setWordPairs] = useState(
-        new Map<string, WordWithTranslatedValueWithKey>()
+    const [textWithHints, setTextWithHints] = useState(List<WordPair>());
+    const [wordPairs, setWordPairs] = useState(OrderedMap<string, WordPair>());
+    const [wordPairToDisplay, updateWordToDisplay] = useState(
+        initialWordPairToDisplay
     );
 
     useEffect(() => {
-        callSetTranslationState(
+        translateWords(
             { text, previousText },
             setTextWithHints,
             getTranslatedValues
         );
     }, [text]);
 
+    useEffect(() => updateHints(wordPairs, wordPairToDisplay, setWordPairs), [
+        wordPairToDisplay,
+    ]);
+
     return (
         <div>
             <h3>Put here a text to translate</h3>
             <Textarea text={text} onChange={updateTextArea} />
-            <TextWithHintsComponent
+            <TextWithHints
                 textWithHints={textWithHints}
-                setWordPairs={(wordPair: WordWithTranslatedValueWithKey) =>
-                    setWordPairs(
-                        new Map(wordPairs.set(wordPair.word, wordPair))
-                    )
+                setWordPairs={(wordPair) =>
+                    updateWordToDisplay({ wordPair, action: ADD })
                 }
             />
-            <TranslatedValue
+            <Hints
                 wordPairs={wordPairs}
-                deleteHint={(word: string) =>
-                    wordPairs.delete(word) && setWordPairs(new Map(wordPairs))
+                deleteHint={(wordPair) =>
+                    updateWordToDisplay({ wordPair, action: DELETE })
                 }
             />
         </div>

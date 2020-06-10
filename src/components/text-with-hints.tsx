@@ -3,50 +3,41 @@ import React from 'react';
 import { minWordLengthToTranslate } from '../constants/constants';
 
 import {
-    TextWithHintsComponentProps,
-    WordWithTranslatedValueWithKey,
+    WordPair,
+    TextWithHintsProps,
     WordWithHintProps,
 } from '../models/models';
 
-export const WordWithHint = ({
-    wordWithTranslatedValueWithKey,
-    setWordPairs,
-}: WordWithHintProps) => {
-    const { word, key } = wordWithTranslatedValueWithKey;
-    const shouldDisplayHint = word.length > minWordLengthToTranslate;
+export const WordWithHint = React.memo<WordWithHintProps>(
+    ({ wordPair, setWordPairs }: WordWithHintProps) => {
+        const { word } = wordPair;
+        const shouldDisplayHint = word.length > minWordLengthToTranslate;
 
-    return (
-        <>
-            <span
-                className={shouldDisplayHint ? 'active' : null}
-                onClick={() =>
-                    shouldDisplayHint &&
-                    setWordPairs(wordWithTranslatedValueWithKey)
-                }
-            >
-                {`${word}`}
-            </span>{' '}
-        </>
-    );
-};
+        return (
+            <>
+                <span
+                    className={shouldDisplayHint ? 'active' : null}
+                    onClick={() => shouldDisplayHint && setWordPairs()}
+                >
+                    {`${word}`}
+                </span>{' '}
+            </>
+        );
+    },
+    (prev, cur) => prev.wordPair.key === cur.wordPair.key
+);
 
-export const TextWithHintsComponent = ({
-    textWithHints,
-    setWordPairs,
-}: TextWithHintsComponentProps) => (
-    <div>
-        {textWithHints.map(
-            (
-                wordWithTranslatedValueWithKey: WordWithTranslatedValueWithKey
-            ) => (
+export const TextWithHints = React.memo<TextWithHintsProps>(
+    ({ textWithHints, setWordPairs }: TextWithHintsProps) => (
+        <div>
+            {textWithHints.map((wordPair: WordPair) => (
                 <WordWithHint
-                    key={wordWithTranslatedValueWithKey.key}
-                    wordWithTranslatedValueWithKey={
-                        wordWithTranslatedValueWithKey
-                    }
-                    setWordPairs={setWordPairs}
+                    key={wordPair.key}
+                    wordPair={wordPair}
+                    setWordPairs={() => setWordPairs(wordPair)}
                 />
-            )
-        )}
-    </div>
+            ))}
+        </div>
+    ),
+    (prev, cur) => prev.textWithHints === cur.textWithHints
 );

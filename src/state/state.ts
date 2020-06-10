@@ -1,8 +1,4 @@
-import {
-    Dictionary,
-    DictionaryInterface,
-    WordWithTranslatedValue,
-} from '../models/models';
+import { Dictionary, DictionaryInterface, WordPair } from '../models/models';
 
 const dictionary: Dictionary = {};
 
@@ -11,9 +7,10 @@ export const distionaryInterface: DictionaryInterface = {
         dictionary[word] = {
             word,
             translatedValue,
+            key: '',
         };
     },
-    get(word: string): WordWithTranslatedValue | null {
+    get(word: string): WordPair | null {
         return dictionary[word] || null;
     },
 };

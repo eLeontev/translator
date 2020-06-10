@@ -1,20 +1,29 @@
-export type WordWithTranslatedValue = {
+import { OrderedMap, List } from 'immutable';
+
+export type WordPair = {
+    key: string;
     word: string;
     translatedValue: string;
 };
-export type WordWithTranslatedValueWithKey = WordWithTranslatedValue & {
-    key: string;
+
+export const ADD = 'ADD';
+export const DELETE = 'DELETE';
+export type Actions = typeof ADD | typeof DELETE;
+
+export type WordPairToDisplay = {
+    wordPair: WordPair;
+    action: Actions | null;
 };
 
-export type TextWithHints = Array<WordWithTranslatedValueWithKey>;
+export type WordPairs = List<WordPair>;
 
 export type Dictionary = {
-    [word: string]: WordWithTranslatedValue;
+    [word: string]: WordPair;
 };
 
 export type DictionaryInterface = {
     set(word: string, translatedValue: string): void;
-    get(word: string): WordWithTranslatedValue | null;
+    get(word: string): WordPair | null;
 };
 
 export type ListOfWordsToTranslate = Array<string>;
@@ -36,23 +45,26 @@ export type TranslatorProps = {
     getTranslatedValues: GetTranslatedValues;
 };
 
-export type TextWithHintsComponentProps = {
-    textWithHints: TextWithHints;
-    setWordPairs(wordPair: WordWithTranslatedValueWithKey): void;
+export type TextWithHintsProps = {
+    textWithHints: WordPairs;
+    setWordPairs(wordPair: WordPair): void;
 };
 
-export type TranslatedValueProps = {
-    deleteHint(word: string): void;
-    wordPairs: Map<string, WordWithTranslatedValueWithKey>;
+export type HintsProps = {
+    deleteHint(wordPair: WordPair): void;
+    wordPairs: OrderedMap<string, WordPair>;
+};
+
+export type HintProps = {
+    deleteHint(): void;
+    wordPair: WordPair;
 };
 
 export type WordWithHintProps = {
-    wordWithTranslatedValueWithKey: WordWithTranslatedValueWithKey;
-    setWordPairs(
-        wordWithTranslatedValueWithKey: WordWithTranslatedValueWithKey
-    ): void;
+    wordPair: WordPair;
+    setWordPairs(): void;
 };
 
 export type SetterForUseState<V> = (value: V) => void;
 
-export type GetTranslatedValues = (text: Text) => Promise<TextWithHints>;
+export type GetTranslatedValues = (text: Text) => Promise<WordPairs>;

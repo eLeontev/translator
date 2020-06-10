@@ -1,7 +1,7 @@
-import uniqueid from 'lodash.uniqueid';
+import uniqueId from 'lodash.uniqueid';
 
 import {
-    TextWithHints,
+    WordPairs,
     DictionaryInterface,
     ListOfWordsToTranslate,
     Text,
@@ -10,22 +10,23 @@ import {
 const setWordsToTranslate = (
     distionaryInterface: DictionaryInterface,
     setOfWordsToTrnaslate: Set<string>
-) => (listOfWordsToTranslate: ListOfWordsToTranslate, letter: string) => {
-    const isAlreadyCandidateToTranslate = setOfWordsToTrnaslate.has(letter);
-    const isExists = Boolean(letter);
-    const isAlreadyTranslated = distionaryInterface.get(letter);
+) => (listOfWordsToTranslate: ListOfWordsToTranslate, word: string) => {
+    const isAlreadyCandidateToTranslate = setOfWordsToTrnaslate.has(word);
+    const isExists = Boolean(word);
+    const isAlreadyTranslated = distionaryInterface.get(word);
 
     if (isAlreadyCandidateToTranslate || !isExists || isAlreadyTranslated) {
         return listOfWordsToTranslate;
     }
 
-    listOfWordsToTranslate.push(letter);
+    setOfWordsToTrnaslate.add(word);
+    listOfWordsToTranslate.push(word);
     return listOfWordsToTranslate;
 };
 
 export const getTranslatedValues = (
     distionaryInterface: DictionaryInterface
-) => async ({ text }: Text): Promise<TextWithHints> => {
+) => async ({ text }: Text): Promise<WordPairs> => {
     const setOfWordsToTrnaslate = new Set<string>();
     const wordsFromTheText = text.trim().split(' ');
 
@@ -36,14 +37,14 @@ export const getTranslatedValues = (
 
     await Promise.all(listOfWordsToTranslate);
 
-    return wordsFromTheText.map((letter: string) => {
-        if (!distionaryInterface.get(letter)) {
-            distionaryInterface.set(letter, letter);
+    return wordsFromTheText.map((word: string) => {
+        if (!distionaryInterface.get(word)) {
+            distionaryInterface.set(word, word);
         }
 
         return {
-            ...distionaryInterface.get(letter),
-            key: uniqueid('letter-id_'),
+            ...distionaryInterface.get(word),
+            key: uniqueId('word-id'),
         };
     });
 };

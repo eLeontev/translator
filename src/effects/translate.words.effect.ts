@@ -3,14 +3,14 @@ import debounce from 'lodash.debounce';
 import {
     GetTranslatedValues,
     SetterForUseState,
-    TextWithHints,
+    WordPairs,
     Text,
 } from '../models/models';
 import { userInputDelay } from '../constants/constants';
 
 export const setTranslatorsState = async (
     text: Text,
-    setTextWithHints: SetterForUseState<TextWithHints>,
+    setTextWithHints: SetterForUseState<WordPairs>,
     getTranslatedValues: GetTranslatedValues
 ) => {
     setTextWithHints(await getTranslatedValues(text));
@@ -21,9 +21,9 @@ export const debouncedSetTranslatorState = debounce(
     userInputDelay
 );
 
-export const callSetTranslationState = (
+export const translateWords = (
     { text, previousText }: Text,
-    setTextWithHints: SetterForUseState<TextWithHints>,
+    setTextWithHints: SetterForUseState<WordPairs>,
     getTranslatedValues: GetTranslatedValues
 ): void => {
     const isUserManualEditText =

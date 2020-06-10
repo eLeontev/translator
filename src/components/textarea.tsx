@@ -5,8 +5,8 @@ import { TextareaProps } from '../models/models';
 export const Textarea = ({ text, onChange }: TextareaProps) => (
     <textarea
         value={text}
-        onChange={(event) =>
-            onChange({ text: event.target.value, previousText: text })
+        onChange={({ target: { value } }) =>
+            onChange({ text: value, previousText: text })
         }
     ></textarea>
 );
