@@ -1,17 +1,51 @@
 import React from 'react';
-import { TextWithHints, LetterWithTranslatedValue } from '../models/models';
+
+import { minWordLengthToTranslate } from '../constants/constants';
+
+import {
+    TextWithHintsComponentProps,
+    WordWithTranslatedValueWithKey,
+    WordWithHintProps,
+} from '../models/models';
+
+export const WordWithHint = ({
+    wordWithTranslatedValueWithKey,
+    setWordPairs,
+}: WordWithHintProps) => {
+    const { word, key } = wordWithTranslatedValueWithKey;
+    const shouldDisplayHint = word.length > minWordLengthToTranslate;
+
+    return (
+        <>
+            <span
+                className={shouldDisplayHint ? 'active' : null}
+                onClick={() =>
+                    shouldDisplayHint &&
+                    setWordPairs(wordWithTranslatedValueWithKey)
+                }
+            >
+                {`${word}`}
+            </span>{' '}
+        </>
+    );
+};
 
 export const TextWithHintsComponent = ({
     textWithHints,
-}: {
-    textWithHints: TextWithHints;
-}) => (
+    setWordPairs,
+}: TextWithHintsComponentProps) => (
     <div>
         {textWithHints.map(
-            ({ letter, translatedValue, key }: LetterWithTranslatedValue) => (
-                <a key={key} href={translatedValue}>
-                    {letter}{' '}
-                </a>
+            (
+                wordWithTranslatedValueWithKey: WordWithTranslatedValueWithKey
+            ) => (
+                <WordWithHint
+                    key={wordWithTranslatedValueWithKey.key}
+                    wordWithTranslatedValueWithKey={
+                        wordWithTranslatedValueWithKey
+                    }
+                    setWordPairs={setWordPairs}
+                />
             )
         )}
     </div>

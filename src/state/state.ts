@@ -1,19 +1,19 @@
 import {
     Dictionary,
     DictionaryInterface,
-    LetterWithTranslatedValueWithoutKey,
+    WordWithTranslatedValue,
 } from '../models/models';
 
 const dictionary: Dictionary = {};
 
 export const distionaryInterface: DictionaryInterface = {
-    set(letter: string, translatedValue: string): void {
-        dictionary[letter] = {
-            letter,
+    set(word: string, translatedValue: string): void {
+        dictionary[word] = {
+            word,
             translatedValue,
         };
     },
-    get(letter: string): LetterWithTranslatedValueWithoutKey | null {
-        return dictionary[letter] || null;
+    get(word: string): WordWithTranslatedValue | null {
+        return dictionary[word] || null;
     },
 };

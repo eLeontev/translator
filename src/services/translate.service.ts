@@ -3,40 +3,40 @@ import uniqueid from 'lodash.uniqueid';
 import {
     TextWithHints,
     DictionaryInterface,
-    ListOfLettersToTranslate,
+    ListOfWordsToTranslate,
     Text,
 } from '../models/models';
 
-const setLettersToTranslate = (
+const setWordsToTranslate = (
     distionaryInterface: DictionaryInterface,
-    setOfLettersToTrnaslate: Set<string>
-) => (listOfLettersToTranslate: ListOfLettersToTranslate, letter: string) => {
-    const isAlreadyCandidateToTranslate = setOfLettersToTrnaslate.has(letter);
+    setOfWordsToTrnaslate: Set<string>
+) => (listOfWordsToTranslate: ListOfWordsToTranslate, letter: string) => {
+    const isAlreadyCandidateToTranslate = setOfWordsToTrnaslate.has(letter);
     const isExists = Boolean(letter);
     const isAlreadyTranslated = distionaryInterface.get(letter);
 
     if (isAlreadyCandidateToTranslate || !isExists || isAlreadyTranslated) {
-        return listOfLettersToTranslate;
+        return listOfWordsToTranslate;
     }
 
-    listOfLettersToTranslate.push(letter);
-    return listOfLettersToTranslate;
+    listOfWordsToTranslate.push(letter);
+    return listOfWordsToTranslate;
 };
 
 export const getTranslatedValues = (
     distionaryInterface: DictionaryInterface
 ) => async ({ text }: Text): Promise<TextWithHints> => {
-    const setOfLettersToTrnaslate = new Set<string>();
-    const lettersFromTheText = text.trim().split(' ');
+    const setOfWordsToTrnaslate = new Set<string>();
+    const wordsFromTheText = text.trim().split(' ');
 
-    const listOfLettersToTranslate = lettersFromTheText.reduce(
-        setLettersToTranslate(distionaryInterface, setOfLettersToTrnaslate),
+    const listOfWordsToTranslate = wordsFromTheText.reduce(
+        setWordsToTranslate(distionaryInterface, setOfWordsToTrnaslate),
         []
     );
 
-    await Promise.all(listOfLettersToTranslate);
+    await Promise.all(listOfWordsToTranslate);
 
-    return lettersFromTheText.map((letter: string) => {
+    return wordsFromTheText.map((letter: string) => {
         if (!distionaryInterface.get(letter)) {
             distionaryInterface.set(letter, letter);
         }

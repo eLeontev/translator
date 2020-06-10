@@ -1,25 +1,25 @@
-export type LetterWithTranslatedValueWithoutKey = {
-    letter: string;
+export type WordWithTranslatedValue = {
+    word: string;
     translatedValue: string;
 };
-export type LetterWithTranslatedValue = LetterWithTranslatedValueWithoutKey & {
+export type WordWithTranslatedValueWithKey = WordWithTranslatedValue & {
     key: string;
 };
 
-export type TextWithHints = Array<LetterWithTranslatedValue>;
+export type TextWithHints = Array<WordWithTranslatedValueWithKey>;
 
 export type Dictionary = {
-    [letter: string]: LetterWithTranslatedValueWithoutKey;
+    [word: string]: WordWithTranslatedValue;
 };
 
 export type DictionaryInterface = {
-    set(letter: string, translatedValue: string): void;
-    get(letter: string): LetterWithTranslatedValueWithoutKey | null;
+    set(word: string, translatedValue: string): void;
+    get(word: string): WordWithTranslatedValue | null;
 };
 
-export type ListOfLettersToTranslate = Array<string>;
-export type TranslatedLettersMap = {
-    [letter: string]: string;
+export type ListOfWordsToTranslate = Array<string>;
+export type TranslatedwWordsMap = {
+    [word: string]: string;
 };
 
 export type Text = {
@@ -34,6 +34,23 @@ export type TextareaProps = {
 
 export type TranslatorProps = {
     getTranslatedValues: GetTranslatedValues;
+};
+
+export type TextWithHintsComponentProps = {
+    textWithHints: TextWithHints;
+    setWordPairs(wordPair: WordWithTranslatedValueWithKey): void;
+};
+
+export type TranslatedValueProps = {
+    deleteHint(word: string): void;
+    wordPairs: Map<string, WordWithTranslatedValueWithKey>;
+};
+
+export type WordWithHintProps = {
+    wordWithTranslatedValueWithKey: WordWithTranslatedValueWithKey;
+    setWordPairs(
+        wordWithTranslatedValueWithKey: WordWithTranslatedValueWithKey
+    ): void;
 };
 
 export type SetterForUseState<V> = (value: V) => void;
