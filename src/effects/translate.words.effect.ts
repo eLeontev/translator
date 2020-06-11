@@ -1,58 +1,33 @@
 import { useEffect } from 'react';
-import debounce from 'lodash.debounce';
+import { List } from 'immutable';
 
 import {
     GetTranslatedValues,
     SetterForUseState,
     WordPairs,
     Text,
+    WordPair,
 } from '../models/models';
-import { userInputDelay } from '../constants/constants';
 
 export const setTranslatorsState = async (
     text: Text,
+    textWithHints: List<WordPair>,
     setTextWithHints: SetterForUseState<WordPairs>,
     getTranslatedValues: GetTranslatedValues
 ) => {
-    setTextWithHints(await getTranslatedValues(text));
-};
-
-export const debouncedSetTranslatorState = debounce(
-    setTranslatorsState,
-    userInputDelay
-);
-
-export const translateWords = (
-    { text, previousText }: Text,
-    setTextWithHints: SetterForUseState<WordPairs>,
-    getTranslatedValues: GetTranslatedValues
-): void => {
-    const isUserManualEditText =
-        Math.abs(text.length - previousText.length) === 1;
-
-    if (isUserManualEditText) {
-        debouncedSetTranslatorState(
-            { text, previousText },
-            setTextWithHints,
-            getTranslatedValues
-        );
-    } else {
-        setTranslatorsState(
-            { text, previousText },
-            setTextWithHints,
-            getTranslatedValues
-        );
-    }
+    setTextWithHints(await getTranslatedValues(text, textWithHints));
 };
 
 export const useTranslateWords = (
     { text, previousText }: Text,
+    textWithHints: List<WordPair>,
     setTextWithHints: SetterForUseState<WordPairs>,
     getTranslatedValues: GetTranslatedValues
 ) => {
     useEffect(() => {
-        translateWords(
+        setTranslatorsState(
             { text, previousText },
+            textWithHints,
             setTextWithHints,
             getTranslatedValues
         );

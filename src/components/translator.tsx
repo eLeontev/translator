@@ -21,6 +21,7 @@ export const Translator = ({ getTranslatedValues }: TranslatorProps) => {
 
     useTranslateWords(
         { text, previousText },
+        textWithHints,
         setTextWithHints,
         getTranslatedValues
     );

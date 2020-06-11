@@ -67,4 +67,14 @@ export type WordWithHintProps = {
 
 export type SetterForUseState<V> = (value: V) => void;
 
-export type GetTranslatedValues = (text: Text) => Promise<WordPairs>;
+export type GetTranslatedValues = (
+    text: Text,
+    textWithHints: List<WordPair>
+) => Promise<WordPairs>;
+
+export type ChangedWordData = {
+    index: number;
+    isFound: boolean;
+    word: string;
+    wordsToTranslate: Array<string>;
+};

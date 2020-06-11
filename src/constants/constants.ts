@@ -1,6 +1,5 @@
-import { Text, WordPairToDisplay } from '../models/models';
+import { Text, WordPairToDisplay, ChangedWordData } from '../models/models';
 
-export const userInputDelay = 300;
 export const minWordLengthToTranslate = 3;
 export const initialText: Text = {
     text: '',
@@ -14,4 +13,11 @@ export const initialWordPairToDisplay: WordPairToDisplay = {
         word: '',
     },
     action: null,
+};
+
+export const emptyChangedWordData: ChangedWordData = {
+    index: 0,
+    isFound: false,
+    word: '',
+    wordsToTranslate: [],
 };
