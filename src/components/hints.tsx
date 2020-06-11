@@ -19,16 +19,13 @@ export const Hints = React.memo<HintsProps>(
         wordPairs.size ? (
             <div>
                 <h3>Hints</h3>
-                {wordPairs
-                    .valueSeq()
-                    .toList()
-                    .map((wordPair: WordPair) => (
-                        <Hint
-                            key={wordPair.key}
-                            wordPair={wordPair}
-                            deleteHint={() => deleteHint(wordPair)}
-                        />
-                    ))}
+                {wordPairs.valueSeq().map((wordPair: WordPair) => (
+                    <Hint
+                        key={wordPair.key}
+                        wordPair={wordPair}
+                        deleteHint={() => deleteHint(wordPair)}
+                    />
+                ))}
             </div>
         ) : null,
     (prev, cur) => prev.wordPairs === cur.wordPairs
