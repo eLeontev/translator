@@ -1,4 +1,13 @@
-import { ADD, DELETE, WordPairToDisplay, WordPairs } from '../models/models';
+import { useEffect } from 'react';
+import { OrderedMap } from 'immutable';
+
+import {
+    ADD,
+    DELETE,
+    WordPairToDisplay,
+    WordPairs,
+    WordPair,
+} from '../models/models';
 
 export const updateHints = (
     wordPairs: WordPairs,
@@ -18,4 +27,14 @@ export const updateHints = (
     if (updatedWordPairs) {
         setWordPairs(updatedWordPairs);
     }
+};
+
+export const useUpdateHints = (
+    wordPairs: WordPairs,
+    setWordPairs: (wordPairs: OrderedMap<string, WordPair>) => void,
+    wordPairToDisplay: WordPairToDisplay
+) => {
+    useEffect(() => updateHints(wordPairs, wordPairToDisplay, setWordPairs), [
+        wordPairToDisplay,
+    ]);
 };

@@ -6,10 +6,10 @@ import { TextWithHints } from './text-with-hints';
 import { Hints } from './Hints';
 
 import { initialText, initialWordPairToDisplay } from '../constants/constants';
-import { translateWords } from '../effects/translate.words.effect';
+import { useTranslateWords } from '../effects/translate.words.effect';
 
 import { TranslatorProps, WordPair, ADD, DELETE } from '../models/models';
-import { updateHints } from '../effects/update-hints.effect';
+import { useUpdateHints } from '../effects/update-hints.effect';
 
 export const Translator = ({ getTranslatedValues }: TranslatorProps) => {
     const [{ text, previousText }, updateTextArea] = useState(initialText);
@@ -19,17 +19,13 @@ export const Translator = ({ getTranslatedValues }: TranslatorProps) => {
         initialWordPairToDisplay
     );
 
-    useEffect(() => {
-        translateWords(
-            { text, previousText },
-            setTextWithHints,
-            getTranslatedValues
-        );
-    }, [text]);
+    useTranslateWords(
+        { text, previousText },
+        setTextWithHints,
+        getTranslatedValues
+    );
 
-    useEffect(() => updateHints(wordPairs, wordPairToDisplay, setWordPairs), [
-        wordPairToDisplay,
-    ]);
+    useUpdateHints(wordPairs, setWordPairs, wordPairToDisplay);
 
     return (
         <div>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import debounce from 'lodash.debounce';
 
 import {
@@ -42,4 +43,18 @@ export const translateWords = (
             getTranslatedValues
         );
     }
+};
+
+export const useTranslateWords = (
+    { text, previousText }: Text,
+    setTextWithHints: SetterForUseState<WordPairs>,
+    getTranslatedValues: GetTranslatedValues
+) => {
+    useEffect(() => {
+        translateWords(
+            { text, previousText },
+            setTextWithHints,
+            getTranslatedValues
+        );
+    }, [text]);
 };
