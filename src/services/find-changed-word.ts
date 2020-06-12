@@ -24,7 +24,6 @@ export const findChangedWordIndex = (
 ) => {
     const previousTextList = previousText.split(' ');
 
-    debugger;
     if (
         !isSingleSymbolChanged ||
         (countOfWordsIsNotChanged(previousTextList, textList) &&
@@ -42,14 +41,7 @@ export const findChangedWordIndex = (
     );
 
     let isIndexNotDefined = true;
-    let limit = 5;
-    let i = 0;
-    debugger;
     while (isIndexNotDefined) {
-        if (i > limit) {
-            debugger;
-            return emptyChangedWordData;
-        }
         const halfOfLength = Math.ceil((start + end) / 2);
         if (comparedArraysValuesInRange(start, halfOfLength)) {
             start = halfOfLength;
@@ -60,7 +52,6 @@ export const findChangedWordIndex = (
         if (end - start === 1) {
             isIndexNotDefined = false;
         }
-        i++;
     }
 
     const word = textList[start];
