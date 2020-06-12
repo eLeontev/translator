@@ -42,7 +42,8 @@ export type TextareaProps = {
 };
 
 export type TranslatorProps = {
-    getTranslatedValues: GetTranslatedValues;
+    getTextWithHints: GetTextWithHints;
+    dictionaryInterface: DictionaryInterface;
 };
 
 export type TextWithHintsProps = {
@@ -67,10 +68,10 @@ export type WordWithHintProps = {
 
 export type SetterForUseState<V> = (value: V) => void;
 
-export type GetTranslatedValues = (
+export type GetTextWithHints = (
     text: Text,
     textWithHints: List<WordPair>
-) => Promise<WordPairs>;
+) => WordPairs;
 
 export type ChangedWordData = {
     index: number;

@@ -2,16 +2,15 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { Translator } from './components/translator';
-import { getTranslatedValues } from './services/translate.service';
-import { distionaryInterface } from './state/state';
+import { getTextWithHints } from './services/get-text-with-hints';
+import { dictionaryInterface } from './state/state';
 
-const renderApp = async () => {
+export const renderApp = async () => {
     ReactDOM.render(
         <Translator
-            getTranslatedValues={getTranslatedValues(distionaryInterface)}
+            getTextWithHints={getTextWithHints}
+            dictionaryInterface={dictionaryInterface}
         />,
         document.getElementById('root')
     );
 };
-
-renderApp();

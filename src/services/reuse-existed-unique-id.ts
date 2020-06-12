@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import { ChangedWordData, WordPair } from '../models/models';
 
 export const getExistedUniqueId = (
-    { isFound, index, word }: ChangedWordData,
+    { isFound, index }: ChangedWordData,
     translatedWordData: { index: number; word: string },
     textWithHints: List<WordPair>,
     wordsFromTheText: List<string>

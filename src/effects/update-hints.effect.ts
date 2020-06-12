@@ -7,21 +7,33 @@ import {
     WordPairToDisplay,
     WordPairs,
     WordPair,
+    DictionaryInterface,
 } from '../models/models';
 
 export const updateHints = (
     wordPairs: WordPairs,
     wordPairToDisplay: WordPairToDisplay,
+    dictionaryInterface: DictionaryInterface,
     setWordPairs: (wordPairs: WordPairs) => void
 ) => {
     const { action, wordPair } = wordPairToDisplay;
+    const wordWithOnlyLetters = wordPair.word.replace(/\W/g, '');
+
     let updatedWordPairs;
     if (action === ADD) {
-        updatedWordPairs = wordPairs.set(wordPair.word, wordPair);
+        if (!dictionaryInterface.get(wordWithOnlyLetters)) {
+            const translatedValue = wordWithOnlyLetters; // TODO
+            dictionaryInterface.set(wordWithOnlyLetters, translatedValue);
+        }
+
+        updatedWordPairs = wordPairs.set(
+            wordWithOnlyLetters,
+            dictionaryInterface.get(wordWithOnlyLetters)
+        );
     }
 
     if (action === DELETE) {
-        updatedWordPairs = wordPairs.delete(wordPair.word, wordPair);
+        updatedWordPairs = wordPairs.delete(wordWithOnlyLetters, wordPair);
     }
 
     if (updatedWordPairs) {
@@ -31,10 +43,18 @@ export const updateHints = (
 
 export const useUpdateHints = (
     wordPairs: WordPairs,
-    setWordPairs: (wordPairs: OrderedMap<string, WordPair>) => void,
-    wordPairToDisplay: WordPairToDisplay
+    wordPairToDisplay: WordPairToDisplay,
+    dictionaryInterface: DictionaryInterface,
+    setWordPairs: (wordPairs: OrderedMap<string, WordPair>) => void
 ) => {
-    useEffect(() => updateHints(wordPairs, wordPairToDisplay, setWordPairs), [
-        wordPairToDisplay,
-    ]);
+    useEffect(
+        () =>
+            updateHints(
+                wordPairs,
+                wordPairToDisplay,
+                dictionaryInterface,
+                setWordPairs
+            ),
+        [wordPairToDisplay]
+    );
 };

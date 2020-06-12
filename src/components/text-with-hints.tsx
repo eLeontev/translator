@@ -11,7 +11,8 @@ import {
 export const WordWithHint = React.memo<WordWithHintProps>(
     ({ wordPair, setWordPairs }: WordWithHintProps) => {
         const { word } = wordPair;
-        const shouldDisplayHint = word.length > minWordLengthToTranslate;
+        const shouldDisplayHint =
+            word.replace(/\W/g, '').length > minWordLengthToTranslate;
 
         return (
             <>
@@ -30,6 +31,7 @@ export const WordWithHint = React.memo<WordWithHintProps>(
 export const TextWithHints = React.memo<TextWithHintsProps>(
     ({ textWithHints, setWordPairs }: TextWithHintsProps) => (
         <div>
+            <h3>Text with hints</h3>
             {textWithHints.map((wordPair: WordPair) => (
                 <WordWithHint
                     key={wordPair.key}

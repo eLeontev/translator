@@ -1,10 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     watch: true,
     stats: 'errors-warnings',
-    entry: './src/index.tsx',
+    entry: './index.ts',
     devtool: 'source-map',
     optimization: {
         runtimeChunk: true,
@@ -32,6 +33,10 @@ module.exports = {
                     },
                 },
             },
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+            },
         ],
     },
     resolve: {
@@ -48,5 +53,8 @@ module.exports = {
         compress: true,
         port: 9000,
     },
-    plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
+    plugins: [
+        new MiniCssExtractPlugin(),
+        new HtmlWebpackPlugin({ template: './index.html' }),
+    ],
 };

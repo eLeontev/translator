@@ -1,13 +1,15 @@
+import uniqueId from 'lodash.uniqueid';
+
 import { Dictionary, DictionaryInterface, WordPair } from '../models/models';
 
 const dictionary: Dictionary = {};
 
-export const distionaryInterface: DictionaryInterface = {
+export const dictionaryInterface: DictionaryInterface = {
     set(word: string, translatedValue: string): void {
         dictionary[word] = {
             word,
             translatedValue,
-            key: '',
+            key: uniqueId('translated-word-id='),
         };
     },
     get(word: string): WordPair | null {

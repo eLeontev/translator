@@ -44,13 +44,10 @@ export const isOnlySingleSymbolChanged = (
             ).length
     ) <= 1;
 
-export const getTranslatedValues = (
-    distionaryInterface: DictionaryInterface
-) => async (
+export const getTextWithHints = (
     { text, previousText }: Text,
     textWithHints: List<WordPair>
-): Promise<WordPairs> => {
-    const setOfWordsToTrnaslate = new Set<string>();
+): WordPairs => {
     const wordsFromTheText = text.trim().length
         ? List(text.trim().split(' ')).filter((word: string) => word)
         : List();
@@ -65,30 +62,15 @@ export const getTranslatedValues = (
         isSingleSymbolChanged
     );
 
-    const listOfWordsToTranslate = isSingleSymbolChanged
-        ? changedWordData.wordsToTranslate
-        : wordsFromTheText.reduce(
-              setWordsToTranslate(distionaryInterface, setOfWordsToTrnaslate),
-              []
-          );
-
-    await Promise.all(listOfWordsToTranslate);
-
-    return wordsFromTheText.map((word: string, index: number) => {
-        if (!distionaryInterface.get(word)) {
-            distionaryInterface.set(word, word);
-        }
-
-        return {
-            ...distionaryInterface.get(word),
-            key: isSingleSymbolChanged
-                ? getExistedUniqueId(
-                      changedWordData,
-                      { word, index },
-                      textWithHints,
-                      wordsFromTheText
-                  ) || uniqueId('word-id')
-                : uniqueId('word-id'),
-        };
-    });
+    return wordsFromTheText.map((word: string, index: number) => ({
+        word,
+        key: isSingleSymbolChanged
+            ? getExistedUniqueId(
+                  changedWordData,
+                  { word, index },
+                  textWithHints,
+                  wordsFromTheText
+              ) || uniqueId('word-id')
+            : uniqueId('word-id'),
+    }));
 };
