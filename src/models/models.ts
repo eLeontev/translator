@@ -79,3 +79,8 @@ export type ChangedWordData = {
     word: string;
     wordsToTranslate: Array<string>;
 };
+
+export type TranslatedWordData = {
+    index: number;
+    word: string;
+};

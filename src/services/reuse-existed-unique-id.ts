@@ -1,9 +1,24 @@
 import { List } from 'immutable';
-import { ChangedWordData, WordPair } from '../models/models';
+
+import {
+    ChangedWordData,
+    WordPair,
+    TranslatedWordData,
+} from '../models/models';
+
+export const couldReuseExistedUnieId = (
+    textWithHints: List<WordPair>,
+    translatedWordData: TranslatedWordData,
+    index: number,
+    isPositiveOffset: boolean
+) =>
+    translatedWordData.index > index &&
+    textWithHints.get(translatedWordData.index + (isPositiveOffset ? +1 : -1))
+        .word === translatedWordData.word;
 
 export const getExistedUniqueId = (
     { isFound, index }: ChangedWordData,
-    translatedWordData: { index: number; word: string },
+    translatedWordData: TranslatedWordData,
     textWithHints: List<WordPair>,
     wordsFromTheText: List<string>
 ): string | void => {
@@ -24,15 +39,29 @@ export const getExistedUniqueId = (
         // add new word
         if (wordsFromTheText.size > textWithHints.size) {
             // reuse for all words after changed words with decrement
-            if (translatedWordData.index > index) {
+            if (
+                couldReuseExistedUnieId(
+                    textWithHints,
+                    translatedWordData,
+                    index,
+                    false
+                )
+            ) {
                 return textWithHints.get(translatedWordData.index - 1).key;
             }
         }
 
         // remove new word
-        if (wordsFromTheText.size > textWithHints.size) {
+        if (wordsFromTheText.size < textWithHints.size) {
             // reuse for all words after changed words with increment
-            if (translatedWordData.index > index) {
+            if (
+                couldReuseExistedUnieId(
+                    textWithHints,
+                    translatedWordData,
+                    index,
+                    true
+                )
+            ) {
                 return textWithHints.get(translatedWordData.index + 1).key;
             }
         }
