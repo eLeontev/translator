@@ -18,12 +18,10 @@ const setComparedArrays = (a: Array<string>, b: Array<string>) => (
 ) => a.slice(min, max).join('') === b.slice(min, max).join('');
 
 export const findChangedWordIndex = (
-    previousText: string,
+    previousTextList: Array<string>,
     textList: Array<string>,
     isSingleSymbolChanged: boolean
 ) => {
-    const previousTextList = previousText.split(' ');
-
     if (
         !isSingleSymbolChanged ||
         (countOfWordsIsNotChanged(previousTextList, textList) &&
