@@ -4,30 +4,7 @@ import uniqueId from 'lodash.uniqueid';
 import { findChangedWordIndex } from './find-changed-word';
 import { getExistedUniqueId } from './reuse-existed-unique-id';
 
-import {
-    WordPairs,
-    DictionaryInterface,
-    ListOfWordsToTranslate,
-    Text,
-    WordPair,
-} from '../models/models';
-
-const setWordsToTranslate = (
-    distionaryInterface: DictionaryInterface,
-    setOfWordsToTrnaslate: Set<string>
-) => (listOfWordsToTranslate: ListOfWordsToTranslate, word: string) => {
-    const isAlreadyCandidateToTranslate = setOfWordsToTrnaslate.has(word);
-    const isExists = Boolean(word);
-    const isAlreadyTranslated = distionaryInterface.get(word);
-
-    if (isAlreadyCandidateToTranslate || !isExists || isAlreadyTranslated) {
-        return listOfWordsToTranslate;
-    }
-
-    setOfWordsToTrnaslate.add(word);
-    listOfWordsToTranslate.push(word);
-    return listOfWordsToTranslate;
-};
+import { WordPairs, Text, WordPair } from '../models/models';
 
 export const isOnlySingleSymbolChanged = (
     textWithHints: List<WordPair>,
@@ -44,12 +21,14 @@ export const isOnlySingleSymbolChanged = (
             ).length
     ) <= 1;
 
+export const removeEmptyElements = (word: string) => word;
+
 export const getTextWithHints = (
     { text, previousText }: Text,
     textWithHints: List<WordPair>
 ): WordPairs => {
     const wordsFromTheText = text.trim().length
-        ? List(text.trim().split(' ')).filter((word: string) => word)
+        ? List(text.trim().split(' ')).filter(removeEmptyElements)
         : List();
 
     const isSingleSymbolChanged = isOnlySingleSymbolChanged(
@@ -57,7 +36,7 @@ export const getTextWithHints = (
         wordsFromTheText
     );
     const changedWordData = findChangedWordIndex(
-        previousText,
+        previousText.split(' ').filter(removeEmptyElements),
         wordsFromTheText.toArray(),
         isSingleSymbolChanged
     );
