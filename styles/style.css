@@ -39,6 +39,7 @@ textarea {
 
 .output {
     flex-grow: 1;
+    word-break: break-word;
 }
 
 .active {
@@ -50,4 +51,5 @@ textarea {
 .word-with-hint {
     display: flex;
     justify-content: space-between;
+    word-break: break-word;
 }
