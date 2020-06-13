@@ -1,5 +1,9 @@
 import { Text, WordPairToDisplay, ChangedWordData } from '../models/models';
 
+export const apiDomen =
+    'https://36slys7lab.execute-api.us-west-2.amazonaws.com';
+export const apiEndpoint = `${apiDomen}/api-v1/translate`;
+
 export const minWordLengthToTranslate = 3;
 export const initialText: Text = {
     text: '',
