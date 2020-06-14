@@ -4,6 +4,7 @@ import { OrderedMap, List } from 'immutable';
 import { Textarea } from './textarea';
 import { TextWithHints } from './text-with-hints';
 import { Hints } from './Hints';
+import { TranslateErrors } from './translate-errors';
 
 import { initialText, initialWordPairToDisplay } from '../constants/constants';
 
@@ -20,6 +21,7 @@ export const Translator = ({
     const [wordPairToDisplay, updateWordToDisplay] = useState(
         initialWordPairToDisplay
     );
+    const [translateError, displayError] = useState(null);
 
     useEffect(() => {
         setTextWithHints(
@@ -31,32 +33,39 @@ export const Translator = ({
         wordPairs,
         wordPairToDisplay,
         dictionaryInterface,
-        setWordPairs
+        setWordPairs,
+        displayError
     );
 
     return (
-        <div className="translator">
-            <section className="input">
-                <h3>Put here a text to translate</h3>
-                <Textarea text={text} onChange={updateTextArea} />
-            </section>
-            {textWithHints.size ? (
-                <section className="output">
-                    <TextWithHints
-                        textWithHints={textWithHints}
-                        setWordPairs={(wordPair) =>
-                            updateWordToDisplay({ wordPair, action: ADD })
-                        }
-                    />
+        <>
+            <div className="translator">
+                <section className="input">
+                    <h3>Put here a text to translate</h3>
+                    <Textarea text={text} onChange={updateTextArea} />
                 </section>
-            ) : null}
+                {textWithHints.size ? (
+                    <section className="output">
+                        <TextWithHints
+                            textWithHints={textWithHints}
+                            setWordPairs={(wordPair) =>
+                                updateWordToDisplay({ wordPair, action: ADD })
+                            }
+                        />
+                    </section>
+                ) : null}
 
-            <Hints
-                wordPairs={wordPairs}
-                deleteHint={(wordPair) =>
-                    updateWordToDisplay({ wordPair, action: DELETE })
-                }
+                <Hints
+                    wordPairs={wordPairs}
+                    deleteHint={(wordPair) =>
+                        updateWordToDisplay({ wordPair, action: DELETE })
+                    }
+                />
+            </div>
+            <TranslateErrors
+                translateError={translateError}
+                cleanupError={() => displayError(null)}
             />
-        </div>
+        </>
     );
 };

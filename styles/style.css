@@ -1,5 +1,5 @@
 #root {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
     font-size: 20px;
 }
 
@@ -52,4 +52,29 @@ textarea {
     display: flex;
     justify-content: space-between;
     word-break: break-word;
+}
+
+.translate-errors {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    width: 300px;
+    padding: 20px;
+    word-break: break-word;
+}
+
+.translate-error {
+    cursor: pointer;
+    background: #323232;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+    margin-bottom: 20px;
+    padding: 15px;
+    font-size: 15px;
+    border-radius: 4px;
+    color: hsla(0, 0%, 100%, .7);
+}
+
+.ranslate-error__word,
+.ranslate-error__error-message {
+    margin: 0;
 }

@@ -25,3 +25,7 @@ export const emptyChangedWordData: ChangedWordData = {
     word: '',
     wordsToTranslate: [],
 };
+
+export const notFoundInDictionary = 'The word is not fond in the dictionary';
+export const wordWasNotTranslated =
+    'The word was not translated, it could be incorrect written';

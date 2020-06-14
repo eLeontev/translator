@@ -66,6 +66,15 @@ export type WordWithHintProps = {
     setWordPairs(): void;
 };
 
+export type TranslateErrorProps = {
+    removeErrorMessage: () => void;
+    translateError: TranslateError;
+};
+export type TranslateErrorsProps = {
+    cleanupError: () => void;
+    translateError: TranslateError;
+};
+
 export type SetterForUseState<V> = (value: V) => void;
 
 export type GetTextWithHints = (
@@ -83,4 +92,10 @@ export type ChangedWordData = {
 export type TranslatedWordData = {
     index: number;
     word: string;
+};
+
+export type TranslateError = {
+    key: string;
+    word: string;
+    errorMessage: string;
 };
