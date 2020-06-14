@@ -21,14 +21,12 @@ export const isOnlySingleSymbolChanged = (
             ).length
     ) <= 1;
 
-export const removeEmptyElements = (word: string) => word;
-
 export const getTextWithHints = (
     { text, previousText }: Text,
     textWithHints: List<WordPair>
 ): WordPairs => {
     const wordsFromTheText = text.trim().length
-        ? List(text.trim().split(' ')).filter(removeEmptyElements)
+        ? List(text.trim().split(' ')).filter(Boolean)
         : List();
 
     const isSingleSymbolChanged = isOnlySingleSymbolChanged(
@@ -36,7 +34,7 @@ export const getTextWithHints = (
         wordsFromTheText
     );
     const changedWordData = findChangedWordIndex(
-        previousText.split(' ').filter(removeEmptyElements),
+        previousText.split(' ').filter(Boolean),
         wordsFromTheText.toArray(),
         isSingleSymbolChanged
     );
